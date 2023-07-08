@@ -1,0 +1,36 @@
+{ parameter (pair string int) ;
+  storage (map string int) ;
+  code { UNPAIR ;
+         DUP ;
+         CDR ;
+         DUP 3 ;
+         DUP 3 ;
+         CAR ;
+         MEM ;
+         IF { DROP 2 }
+            { PUSH int 0 ;
+              DUP 2 ;
+              COMPARE ;
+              EQ ;
+              IF { DROP ; PUSH int 1 } {} ;
+              DUP 3 ;
+              PUSH string "last_number" ;
+              GET ;
+              IF_NONE { PUSH string "option is None" ; FAILWITH } {} ;
+              DIG 3 ;
+              SWAP ;
+              DUP 3 ;
+              MUL ;
+              DIG 3 ;
+              CAR ;
+              SWAP ;
+              SOME ;
+              SWAP ;
+              UPDATE ;
+              SWAP ;
+              SOME ;
+              PUSH string "last_number" ;
+              UPDATE } ;
+         NIL operation ;
+         PAIR } }
+

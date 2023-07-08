@@ -1,0 +1,24 @@
+type user_list = map<string, int>;
+type return_ = [list<operation>, user_list];
+const init_storage: user_list= Map.literal(list([
+    ["last_number", 1]
+]));
+
+const main = (parameter: [string, int], user_list_storage: user_list): return_ => {
+    let name: string = parameter[0];
+    let number: int = parameter[1];
+    let name_exists:bool = Map.mem(name, user_list_storage);
+    if (name_exists) {
+        // Finish the process without changing anything
+        return [list([]), user_list_storage]
+    };
+    if (number == 0) {
+        number = 1;
+    };
+    let last_number_option:option<int> = Map.find_opt("last_number", user_list_storage);
+    let last_number: int = Option.unopt(last_number_option); // If last_number_option is None contract should fail here
+    let store:user_list = user_list_storage; 
+    store = Map.add(name, number * last_number, store);
+    store = Map.update("last_number", Some(number), store);
+    return [list([]), store];
+}; 
